@@ -3,7 +3,13 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-  <form class="form-control" action="index.html" method="post">
-
+  <form class="form-control" action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    First Name :- <input name="first_name" type="text"><br>
+    Last Name :- <input name="last_name" type="text"><br>
+    Username :- <input name="username" type="text"><br>
+    Password :- <input name="password" type="password"><br>
+    Email :- <input name="email" type="email"><br>
+    <button type="submit">Register</button
   </form>
 {% endblock %}
