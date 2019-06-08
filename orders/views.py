@@ -38,3 +38,6 @@ def register_view(request):
     user.last_name = request.POST["last_name"]
     user.save()
     return HttpResponseRedirect(reverse("index"))
+
+def menu(request):
+    pass
