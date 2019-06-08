@@ -4,12 +4,18 @@
 
 {% block body %}
   {{message}}
-  <form class="form-control" action="{% url 'login' %}" method="post">
+  <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
-    Username :- <input type="text" name="username">
-    Password :- <input type="password" name="password">
-    <button type="submit">Login</button>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input name="username" type="text" class="form-control" placeholder="Enter username"><br>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input name="password" type="password" class="form-control" placeholder="Enter password"><br>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
   </form>
   <br>
-  <a href="{% url 'register' %}">Register</a>
+  <a href="{% url 'register' %}" class="btn btn-tertiary">Register</a>
 {% endblock %}
