@@ -8,10 +8,28 @@
   <div>
   <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a><br>
 
-  <form action="{% url 'menu' %}" method="post" class="form-group">
-    <select name="pizzaorothers" class="form-control" id="pizzaorothers">
-      <option value="pizzaandsub">Pizza/Subs</option>
-      <option value="others">/Pasta/Dinner Platter</option>
-    </select>
+  <form action="{% url 'menu' %}" method="post">
+    <div class="form-group">
+      <select name="pizzaorothers" class="form-control" id="pizzaorothers">
+        <option value="pizzaandsub">Pizza/Subs</option>
+        <option value="others">/Pasta/Dinner Platter</option>
+      </select>
+    </div>
+    <div id="selectedpizzaandsub">
+      <div class="form-group">
+        <select name="pizzaorsub" class="form-control" id="pizzaorsub">
+          <option value="pizza">Pizza</option>
+          <option value="sub">Subs</option>
+        </select>
+      </div>
+    </div>
+    <div id="selectedothers">
+      <div class="form-group">
+        <select name="others" class="form-control" id="others">
+          <option value="pasta">Pasta</option>
+          <option value="dinnerplatter">Dinner Platter</option>
+        </select>
+      </div>
+    </div>
   </form>
 {% endblock %}
