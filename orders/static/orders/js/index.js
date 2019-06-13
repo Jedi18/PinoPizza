@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       document.querySelector('#selectedpizza').style.display = "none";
       document.querySelector('#selectedsub').style.display = "block";
+      getsubs();
     }
   }
 
@@ -59,4 +60,48 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('#selecteddinnerplatter').style.display = "block";
     }
   }
+
+  document.querySelector('#pizzatype').onchange = getpizza(document.querySelector('#pizzatype').value);
+
 });
+
+function getsubs()
+{
+  $.ajax({
+    url : '/ajax/getmenuinfo',
+    data : {
+      'data' : 'sub'
+    },
+    dataType : 'json',
+    success : function(data){
+      data.subnames.forEach(function(sub){
+        var sel = document.querySelector('#subname');
+        var opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(sub));
+        opt.value = sub.toLowerCase();
+        sel.appendChild(opt);
+      });
+    }
+  });
+}
+
+function getpizza(type)
+{
+  $.ajax({
+    url : '/ajax/getmenuinfo',
+    data : {
+      'data' : 'pizza',
+      'type' : type
+    },
+    dataType : 'json',
+    success : function(data){
+      data.subnames.forEach(function(sub){
+        var sel = document.querySelector('#subname');
+        var opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(sub));
+        opt.value = sub.toLowerCase();
+        sel.appendChild(opt);
+      });
+    }
+  });
+}

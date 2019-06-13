@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate,login,logout
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.models import User
-
+from .models import PizzaAndSubs, Others, ToppingsAndExtra
 # Create your views here.
 def index(request):
     if not request.user.is_authenticated:
@@ -41,3 +41,22 @@ def register_view(request):
 
 def menu(request):
     pass
+
+def getmenuinfo(request):
+    type = request.GET.get('data', None)
+
+    if type == 'sub':
+        subs = PizzaAndSubs.objects.filter(ispizza=False).all()
+        subnames = [sub.name for sub in subs]
+        data = {
+            "subnames" : subnames
+        }
+    elif type == 'pizza':
+        pizzatype = request.GET.get('type').title()
+        print()
+        print(pizzatype)
+        print()
+        data = {
+            "pizzanames" : "Pizzaaa"
+        }
+    return JsonResponse(data)
