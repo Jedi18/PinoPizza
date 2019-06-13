@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#selectedpizza').style.display = "block";
   document.querySelector('#selectedsub').style.display = "none";
 
+  getpizza(document.querySelector('#pizzatype').value);
+
   document.querySelector('#selectedpastasalad').style.display = "block";
   document.querySelector('#selecteddinnerplatter').style.display = "none";
 
@@ -61,8 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  document.querySelector('#pizzatype').onchange = getpizza(document.querySelector('#pizzatype').value);
-
+  document.querySelector('#pizzatype').onchange = () => {
+    getpizza(document.querySelector('#pizzatype').value);
+  };
 });
 
 function getsubs()
@@ -74,12 +77,23 @@ function getsubs()
     },
     dataType : 'json',
     success : function(data){
+      var sel = document.querySelector('#subname');
+      sel.innerHTML = '';
       data.subnames.forEach(function(sub){
-        var sel = document.querySelector('#subname');
         var opt = document.createElement('option');
         opt.appendChild(document.createTextNode(sub));
         opt.value = sub.toLowerCase();
         sel.appendChild(opt);
+      });
+
+      // Toppings for pizza
+      var extrasel = document.querySelector('#subextra');
+      extrasel.innerHTML = '';
+      data.extranames.forEach(function(extra){
+        var opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(extra));
+        opt.value = extra.toLowerCase();
+        extrasel.appendChild(opt);
       });
     }
   });
@@ -95,12 +109,24 @@ function getpizza(type)
     },
     dataType : 'json',
     success : function(data){
-      data.subnames.forEach(function(sub){
-        var sel = document.querySelector('#subname');
+      // Pizza names
+      var sel = document.querySelector('#pizzaname');
+      sel.innerHTML = '';
+      data.pizzanames.forEach(function(pizza){
         var opt = document.createElement('option');
-        opt.appendChild(document.createTextNode(sub));
-        opt.value = sub.toLowerCase();
+        opt.appendChild(document.createTextNode(pizza));
+        opt.value = pizza.toLowerCase();
         sel.appendChild(opt);
+      });
+
+      // Toppings for pizza
+      var topsel = document.querySelector('#toppings');
+      topsel.innerHTML = '';
+      data.toppingnames.forEach(function(topping){
+        var opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(topping));
+        opt.value = topping.toLowerCase();
+        topsel.appendChild(opt);
       });
     }
   });

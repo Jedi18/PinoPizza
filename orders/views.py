@@ -48,15 +48,20 @@ def getmenuinfo(request):
     if type == 'sub':
         subs = PizzaAndSubs.objects.filter(ispizza=False).all()
         subnames = [sub.name for sub in subs]
+        extras = ToppingsAndExtra.objects.filter(isextra=True).all()
+        extranames = [extra.name for extra in extras]
         data = {
-            "subnames" : subnames
+            "subnames" : subnames,
+            "extranames" : extranames
         }
     elif type == 'pizza':
         pizzatype = request.GET.get('type').title()
-        print()
-        print(pizzatype)
-        print()
+        pizzas = PizzaAndSubs.objects.filter(type=pizzatype).all()
+        toppings = ToppingsAndExtra.objects.filter(isextra=False).all()
+        toppingnames = [topping.name for topping in toppings]
+        pizzanames = [pizza.name for pizza in pizzas]
         data = {
-            "pizzanames" : "Pizzaaa"
+            "pizzanames" : pizzanames,
+            "toppingnames" : toppingnames
         }
     return JsonResponse(data)
