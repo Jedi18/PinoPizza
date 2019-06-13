@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       document.querySelector('#selectedpizzaandsub').style.display = "none";
       document.querySelector('#selectedothers').style.display = "block";
+      getpastasalad();
     }
   };
 
@@ -55,11 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       document.querySelector('#selectedpastasalad').style.display = "block";
       document.querySelector('#selecteddinnerplatter').style.display = "none";
+      getpastasalad();
     }
     else if(selected=="dinnerplatter")
     {
       document.querySelector('#selectedpastasalad').style.display = "none";
       document.querySelector('#selecteddinnerplatter').style.display = "block";
+      getdinnerplatter();
     }
   }
 
@@ -128,6 +131,66 @@ function getpizza(type)
         opt.value = topping.toLowerCase();
         topsel.appendChild(opt);
       });
+    }
+  });
+}
+
+function getpastasalad()
+{
+  $.ajax({
+    url : '/ajax/getmenuinfo',
+    data : {
+      'data' : 'pastasalad'
+    },
+    dataType : 'json',
+    success : function(data){
+      var sel = document.querySelector('#pastasaladname');
+      sel.innerHTML = '';
+
+      var opt = document.createElement('option');
+      opt.appendChild(document.createTextNode("Pasta"));
+      opt.disabled = true;
+      sel.appendChild(opt);
+
+      data.pastanames.forEach(function(pasta){
+        var opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(pasta));
+        opt.value = pasta.toLowerCase();
+        sel.appendChild(opt);
+      });
+
+      var opt = document.createElement('option');
+      opt.appendChild(document.createTextNode("Salad"));
+      opt.disabled = true;
+      sel.appendChild(opt);
+
+      data.saladnames.forEach(function(salad){
+        var opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(salad));
+        opt.value = salad.toLowerCase();
+        sel.appendChild(opt);
+      });
+    }
+  });
+}
+
+function getdinnerplatter(){
+  $.ajax({
+    url : '/ajax/getmenuinfo',
+    data : {
+      'data' : 'dinnerplatter'
+    },
+    dataType : 'json',
+    success : function(data){
+      var sel = document.querySelector('#dinnerplattername');
+      sel.innerHTML = '';
+
+      data.dinnerplatternames.forEach(function(dp){
+        var opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(dp));
+        opt.value = dp.toLowerCase();
+        sel.appendChild(opt);
+      })
     }
   });
 }

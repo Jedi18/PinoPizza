@@ -64,4 +64,19 @@ def getmenuinfo(request):
             "pizzanames" : pizzanames,
             "toppingnames" : toppingnames
         }
+    elif type == "pastasalad":
+        pastas = Others.objects.filter(type="Pasta").all()
+        salads = Others.objects.filter(type="Salad").all()
+        pastanames = [pasta.name for pasta in pastas]
+        saladnames = [salad.name for salad in salads]
+        data = {
+            "pastanames" : pastanames,
+            "saladnames" : saladnames
+        }
+    elif type == "dinnerplatter":
+        dinnerplatters = Others.objects.filter(isdinnerplatter=True).all()
+        dinnerplatternames = [dinnerplatter.name for dinnerplatter in dinnerplatters]
+        data = {
+            "dinnerplatternames" : dinnerplatternames
+        }
     return JsonResponse(data)
