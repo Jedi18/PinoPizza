@@ -11,8 +11,8 @@
   <form action="{% url 'menu' %}" method="post">
     <div class="form-group">
       <select name="pizzaorothers" class="form-control" id="pizzaorothers">
-        <option value="pizzaandsub">Pizza/Subs</option>
-        <option value="others">/Pasta/Dinner Platter</option>
+        <option value="pizzaandsub">Pizza / Subs</option>
+        <option value="others">Salads / Pasta / Dinner Platter</option>
       </select>
     </div>
     <div id="selectedpizzaandsub">
@@ -22,13 +22,66 @@
           <option value="sub">Subs</option>
         </select>
       </div>
+      <div id="selectedpizza">
+        <div class="form-group">
+          <select name="pizzatype" class="form-control" id="pizzatype">
+            <option value="regular">Regular</option>
+            <option value="sicilian">Sicilian</option>
+          </select>
+          <select name="pizzaname" class="form-control" id="pizzaname">
+            <option value="">Pizza name</option>
+          </select>
+          <select name="pizzasize" class="form-control" id="pizzasize">
+            <option value="small">Small</option>
+            <option value="large">Large</option>
+          </select>
+          <select name="toppings" class="form-control" id="toppings">
+            <option value="">Toppings</option>
+          </select>
+        </div>
+      </div>
+      <div id="selectedsub">
+        <div class="form-group">
+          <select name="subname" class="form-control" id="subname">
+            <option value="">Sub name</option>
+          </select>
+          <select name="subsize" class="form-control" id="subsize">
+            <option value="small">Small</option>
+            <option value="large">Large</option>
+          </select>
+          <select name="subextra" class="form-control" id="subextra">
+            <option value="">Sub Extras</option>
+          </select>
+        </div>
+      </div>
     </div>
     <div id="selectedothers">
       <div class="form-group">
         <select name="others" class="form-control" id="others">
-          <option value="pasta">Pasta</option>
+          <option value="pastasalad">Pasta / Salads</option>
           <option value="dinnerplatter">Dinner Platter</option>
         </select>
+      </div>
+      <div id="selectedpastasalad">
+        <div class="form-group">
+          <select name="pastasaladname" class="form-control" id="pastasaladname">
+            <option disabled>-- Pasta --</option>
+            <option value="">Pasta</option>
+            <option disabled>-- Salad --</option>
+            <option value="">Salad</option>
+          </select>
+        </div>
+      </div>
+      <div id="selecteddinnerplatter">
+        <div class="form-group">
+          <select name="dinnerplattername" class="form-control" id="dinnerplattername">
+            <option value="">Dinner platter</option>
+          </select>
+          <select name="dinnerplattersize" class="form-control" id="dinnerplattersize">
+            <option value="small">Small</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
       </div>
     </div>
   </form>
