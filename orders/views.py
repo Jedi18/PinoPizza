@@ -53,19 +53,31 @@ def menu(request):
             elif pizzasize == 'large':
                 total = res[0].large
         elif request.POST["pizzaorsub"] == "sub":
-            subname = request.POST["subname"]
+            subname = request.POST["subname"].capitalize()
             subsize = request.POST["subsize"]
-            subextra = request.POST["subextra"]
+            subextra = request.POST["subextra"].capitalize()
             res = PizzaAndSubs.objects.filter(name=subname, type="Sub").all()
-            total = 0
+            if subsize == 'small':
+                total = res[0].small
+            elif subsize == 'large':
+                total = res[0].large
+            if subextra != 'Noextras':
+                extra = ToppingsAndExtra.objects.filter(name=subextra, isextra=True).all()
+                total += extra[0].price
     elif request.POST["pizzaorothers"] == "others":
         if request.POST["others"] == "pastasalad":
             pastasaladname = request.POST["pastasaladname"]
-            total = 0
+            ps = Others.objects.filter(name=pastasaladname, isdinnerplatter=False).all()
+            total = ps[0].large
         elif request.POST["others"] == "dinnerplatter":
             dinnerplattername = request.POST["dinnerplattername"]
             dinnerplattersize = request.POST["dinnerplattersize"]
-            total = 0
+            dp = Others.objects.filter(name=dinnerplattername, isdinnerplatter=True).all()
+            if dinnerplattersize == 'small':
+                total = dp[0].small
+            elif dinnerplattersize == 'large':
+                total = dp[0].large
+
     return render(request, "orders/menu.html", {"total":total})
 
 def getmenuinfo(request):

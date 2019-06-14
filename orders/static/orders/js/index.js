@@ -92,6 +92,13 @@ function getsubs()
       // Toppings for pizza
       var extrasel = document.querySelector('#subextra');
       extrasel.innerHTML = '';
+
+      // no extras option
+      var opt = document.createElement('option');
+      opt.appendChild(document.createTextNode("No Extras"));
+      opt.value = "noextras";
+      extrasel.appendChild(opt);
+
       data.extranames.forEach(function(extra){
         var opt = document.createElement('option');
         opt.appendChild(document.createTextNode(extra));
@@ -155,7 +162,7 @@ function getpastasalad()
       data.pastanames.forEach(function(pasta){
         var opt = document.createElement('option');
         opt.appendChild(document.createTextNode(pasta));
-        opt.value = pasta.toLowerCase();
+        opt.value = pasta;
         sel.appendChild(opt);
       });
 
@@ -167,7 +174,7 @@ function getpastasalad()
       data.saladnames.forEach(function(salad){
         var opt = document.createElement('option');
         opt.appendChild(document.createTextNode(salad));
-        opt.value = salad.toLowerCase();
+        opt.value = salad;
         sel.appendChild(opt);
       });
     }
@@ -188,7 +195,7 @@ function getdinnerplatter(){
       data.dinnerplatternames.forEach(function(dp){
         var opt = document.createElement('option');
         opt.appendChild(document.createTextNode(dp));
-        opt.value = dp.toLowerCase();
+        opt.value = dp;
         sel.appendChild(opt);
       })
     }
