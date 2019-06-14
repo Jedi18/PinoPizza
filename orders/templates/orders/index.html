@@ -8,7 +8,8 @@
   <div>
   <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a><br>
 
-  <form action="{% url 'menu' %}" method="post">
+  <form action="{% url 'menu' %}" method="post" id="menuform">
+    {% csrf_token %}
     <div class="form-group">
       <select name="pizzaorothers" class="form-control" id="pizzaorothers">
         <option value="pizzaandsub">Pizza / Subs</option>
@@ -77,5 +78,6 @@
         </div>
       </div>
     </div>
+    <button class="btn btn-primary" type="submit">Add to cart</button>
   </form>
 {% endblock %}

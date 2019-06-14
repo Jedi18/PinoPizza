@@ -40,7 +40,33 @@ def register_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 def menu(request):
-    pass
+    #if pizza/subs
+    if request.POST["pizzaorothers"] == "pizzaandsub":
+        if request.POST["pizzaorsub"] == "pizza":
+            pizzatype = request.POST["pizzatype"].capitalize()
+            pizzaname = request.POST["pizzaname"].capitalize()
+            pizzasize = request.POST["pizzasize"]
+            toppings = request.POST["toppings"].capitalize()
+            res = PizzaAndSubs.objects.filter(name=pizzaname,type=pizzatype).all()
+            if pizzasize == 'small':
+                total = res[0].small
+            elif pizzasize == 'large':
+                total = res[0].large
+        elif request.POST["pizzaorsub"] == "sub":
+            subname = request.POST["subname"]
+            subsize = request.POST["subsize"]
+            subextra = request.POST["subextra"]
+            res = PizzaAndSubs.objects.filter(name=subname, type="Sub").all()
+            total = 0
+    elif request.POST["pizzaorothers"] == "others":
+        if request.POST["others"] == "pastasalad":
+            pastasaladname = request.POST["pastasaladname"]
+            total = 0
+        elif request.POST["others"] == "dinnerplatter":
+            dinnerplattername = request.POST["dinnerplattername"]
+            dinnerplattersize = request.POST["dinnerplattersize"]
+            total = 0
+    return render(request, "orders/menu.html", {"total":total})
 
 def getmenuinfo(request):
     type = request.GET.get('data', None)
