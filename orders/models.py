@@ -25,3 +25,4 @@ class Orders(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=8)
     cartno = models.IntegerField()
     size = models.CharField(max_length=64, null=True, blank=True)
+    ordered = models.BooleanField(default=False)

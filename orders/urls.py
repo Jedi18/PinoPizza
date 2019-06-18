@@ -8,5 +8,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register_view, name="register"),
     path("menu", views.menu, name="menu"),
-    path("ajax/getmenuinfo", views.getmenuinfo, name="getmenuinfo")
+    path("ajax/getmenuinfo", views.getmenuinfo, name="getmenuinfo"),
+    path("cart", views.cart, name="cart")
 ]

@@ -91,7 +91,7 @@ def menu(request):
             order = "{} Dinner Platter".format(dinnerplattername)
 
     ord = Orders.objects.create(order=order, price=total,cartno=request.session['cartno'], size=size)
-    return render(request, "orders/menu.html", {"total":total})
+    return HttpResponseRedirect(reverse("cart"))
 
 def getmenuinfo(request):
     type = request.GET.get('data', None)
@@ -131,3 +131,10 @@ def getmenuinfo(request):
             "dinnerplatternames" : dinnerplatternames
         }
     return JsonResponse(data)
+
+def cart(request):
+    orders = Orders.objects.filter(cartno=request.session["cartno"]).all()
+    cart = []
+    for order in orders:
+        cart.append({"name":order.order,"size":order.size,"price":order.price})
+    return render(request, "orders/cart.html", {"cart":cart})
