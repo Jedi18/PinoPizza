@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import PizzaAndSubs, Others, ToppingsAndExtra
+from .models import PizzaAndSubs, Others, ToppingsAndExtra, Orders
 # Create your views here.
 def index(request):
     if not request.user.is_authenticated:
@@ -21,6 +21,7 @@ def login_view(request):
 
     if user is not None:
         login(request, user)
+        request.session["cartno"] = 1
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "orders/login.html", {"message":"Invalid credentials"})
@@ -50,8 +51,11 @@ def menu(request):
             res = PizzaAndSubs.objects.filter(name=pizzaname,type=pizzatype).all()
             if pizzasize == 'small':
                 total = res[0].small
+                size = "Small"
             elif pizzasize == 'large':
                 total = res[0].large
+                size = "Large"
+            order = "{} {} pizza with {} topping".format(pizzatype, pizzaname, toppings)
         elif request.POST["pizzaorsub"] == "sub":
             subname = request.POST["subname"].capitalize()
             subsize = request.POST["subsize"]
@@ -59,25 +63,34 @@ def menu(request):
             res = PizzaAndSubs.objects.filter(name=subname, type="Sub").all()
             if subsize == 'small':
                 total = res[0].small
+                size = "Small"
             elif subsize == 'large':
                 total = res[0].large
+                size = "Large"
             if subextra != 'Noextras':
                 extra = ToppingsAndExtra.objects.filter(name=subextra, isextra=True).all()
                 total += extra[0].price
+                order = "{} sub with extra {}".format(subname, subextra)
     elif request.POST["pizzaorothers"] == "others":
         if request.POST["others"] == "pastasalad":
             pastasaladname = request.POST["pastasaladname"]
             ps = Others.objects.filter(name=pastasaladname, isdinnerplatter=False).all()
             total = ps[0].large
+            order = "{} - Pasta / Salad".format(pastasaladname)
+            size = None
         elif request.POST["others"] == "dinnerplatter":
             dinnerplattername = request.POST["dinnerplattername"]
             dinnerplattersize = request.POST["dinnerplattersize"]
             dp = Others.objects.filter(name=dinnerplattername, isdinnerplatter=True).all()
             if dinnerplattersize == 'small':
                 total = dp[0].small
+                size = "Small"
             elif dinnerplattersize == 'large':
                 total = dp[0].large
+                size = "Large"
+            order = "{} Dinner Platter".format(dinnerplattername)
 
+    ord = Orders.objects.create(order=order, price=total,cartno=request.session['cartno'], size=size)
     return render(request, "orders/menu.html", {"total":total})
 
 def getmenuinfo(request):
