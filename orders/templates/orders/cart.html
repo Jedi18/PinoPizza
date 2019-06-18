@@ -3,9 +3,25 @@
 {% block title %}My Cart :-{% endblock %}
 
 {% block body %}
-  <ul>
-    {% for order in cart %}
-    <li>{{order.name}} - {%if order.size !=  None%}{{order.size}}{% endif %}  {{order.price}}$</li>
+  <div>
+    <ul>
+      {% for order in cart %}
+      <li>{{order.name}} - {%if order.size !=  None%}{{order.size}}{% endif %}  {{order.price}}$</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div>
+    {% load mathfilters %}
+    {%  for order in cart %}
+    + {{order.price}}<br>
     {% endfor %}
-  </ul>
+    + 5$ (Delivery)<br>
+    + 2$ (Packaging)<br>
+    + {{total|mul:0.25}} (Tax)<br>
+    <hr>
+    = {{actualtotal}}
+  </div>
+  <div>
+    <a href="{% url 'place_order' %}" class="btn btn-primary">Checkout</a>
+  </div>
 {% endblock %}

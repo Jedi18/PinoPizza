@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.db.models import Max
 from .models import PizzaAndSubs, Others, ToppingsAndExtra, Orders
 # Create your views here.
 def index(request):
@@ -21,7 +22,14 @@ def login_view(request):
 
     if user is not None:
         login(request, user)
-        request.session["cartno"] = 1
+        max_cartno = Orders.objects.aggregate(Max('cartno'))
+        maxcart = max_cartno['cartno__max']
+        latest = Orders.objects.filter(cartno = maxcart)
+        # If max cart number has been ordered, set new cartno to 1 plus that
+        if latest[0].ordered is True:
+            maxcart += 1
+        request.session["cartno"] = maxcart
+        print(request.session["cartno"])
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "orders/login.html", {"message":"Invalid credentials"})
@@ -134,7 +142,16 @@ def getmenuinfo(request):
 
 def cart(request):
     orders = Orders.objects.filter(cartno=request.session["cartno"]).all()
+    total = 0
     cart = []
     for order in orders:
         cart.append({"name":order.order,"size":order.size,"price":order.price})
-    return render(request, "orders/cart.html", {"cart":cart})
+        total += float(order.price)
+
+    actualtotal = total + (total * 0.25) + 5 + 2
+    return render(request, "orders/cart.html", {"cart":cart, "total":total,"actualtotal":actualtotal})
+
+def place_order(request):
+    Orders.objects.filter(cartno=request.session["cartno"]).update(ordered=True)
+    request.session["cartno"] += 1
+    return render(request, "orders/ordered.html")

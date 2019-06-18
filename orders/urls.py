@@ -9,5 +9,6 @@ urlpatterns = [
     path("register", views.register_view, name="register"),
     path("menu", views.menu, name="menu"),
     path("ajax/getmenuinfo", views.getmenuinfo, name="getmenuinfo"),
-    path("cart", views.cart, name="cart")
+    path("cart", views.cart, name="cart"),
+    path("place_order", views.place_order, name="place_order")
 ]
